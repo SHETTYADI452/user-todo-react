@@ -1,0 +1,57 @@
+version: 0.2
+
+phases:
+  install:
+    commands:
+      - curl -sS -o /usr/local/bin/aws-iam-authenticator https://amazon-eks.s3.us-west-2.amazonaws.com/1.16.8/2020-04-16/bin/linux/amd64/aws-iam-authenticator
+      - curl -sS -o /usr/local/bin/kubectl https://amazon-eks.s3.us-west-2.amazonaws.com/1.16.8/2020-04-16/bin/linux/amd64/kubectl
+      - chmod +x /usr/local/bin/kubectl /usr/local/bin/aws-iam-authenticator
+      - n 14.17.2
+      - node -v
+      - npm install
+      - npm test --coverage
+      #- apt-get update && apt-get -y install jq python3-pip python3-dev && pip3 install --upgrade awscli
+      - BUILD_NAME=user-todo
+      - APP_NAME=user-todo
+      - STAGE=dev
+  pre_build:
+    commands:
+      - echo Logging in to Amazon ECR...
+      - aws --version
+      - $(aws ecr get-login --region $AWS_DEFAULT_REGION --no-include-email)
+      - COMMIT_HASH=$(echo $CODEBUILD_RESOLVED_SOURCE_VERSION | cut -c 1-7)
+      - IMAGE_TAG=build-$(echo $CODEBUILD_BUILD_ID | awk -F":" '{print $2}')
+      - export KUBECONFIG=$HOME/.kube/config
+      - sed -i -e s,USER_TODO,${REPOSITORY_URI},g ./mainConfig.yml
+      - cat ./default.conf
+      - cat ./Dockerfile
+      - cat ./mainConfig.yml
+
+  build:
+    commands:
+      - echo Build started on `date`
+      - echo Building the Docker image...
+      - docker build -t $REPOSITORY_URI:latest -f ./Dockerfile .
+      - docker tag $REPOSITORY_URI:latest $REPOSITORY_URI:$IMAGE_TAG
+  post_build:
+    commands:
+      - echo Build completed on `date`
+      - echo Pushing the Docker images...
+      - docker push $REPOSITORY_URI:latest
+      - docker push $REPOSITORY_URI:$IMAGE_TAG
+      - echo Writing image definitions file...
+      - printf '[{"name":"user-todo","imageUri":"%s"}]' $REPOSITORY_URI:$IMAGE_TAG > imagedefinitions.json
+      - cat imagedefinitions.json
+      - CREDENTIALS=$(aws sts assume-role --role-arn $EKS_KUBECTL_ROLE_ARN --role-session-name codebuild-kubectl --duration-seconds 900)
+      - export AWS_ACCESS_KEY_ID="$(echo ${CREDENTIALS} | jq -r '.Credentials.AccessKeyId')"
+      - export AWS_SECRET_ACCESS_KEY="$(echo ${CREDENTIALS} | jq -r '.Credentials.SecretAccessKey')"
+      - export AWS_SESSION_TOKEN="$(echo ${CREDENTIALS} | jq -r '.Credentials.SessionToken')"
+      - export AWS_EXPIRATION=$(echo ${CREDENTIALS} | jq -r '.Credentials.Expiration')
+      - aws eks update-kubeconfig --name $EKS_CLUSTER_NAME
+      - kubectl get po -n cdp
+      - kubectl apply -f ./mainConfig.yml
+      - printf '[{"name":"mainConfig.yml","imageUri":"%s"}]' $REPOSITORY_URI:$TAG > build.json
+artifacts:
+  files:
+    - imagedefinitions.json
+    - build.json
