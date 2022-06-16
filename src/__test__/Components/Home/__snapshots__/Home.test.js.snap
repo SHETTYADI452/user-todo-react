@@ -1,0 +1,7 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Testing Home component should match the snapshot - shallow 1`] = `ShallowWrapper {}`;
+
+exports[`Testing Home component should match the snapshot 1`] = `ReactWrapper {}`;
+
+exports[`Testing Home component should match the snapshot having loader while passing loading as true in the Loading Context 1`] = `ReactWrapper {}`;

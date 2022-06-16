@@ -1,0 +1,5 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Testing TodoList component should check for loader existence 1`] = `ReactWrapper {}`;
+
+exports[`Testing TodoList component should match the snapshot 1`] = `ReactWrapper {}`;

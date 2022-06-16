@@ -1,0 +1,35 @@
+.input {
+  height: 40px;
+  padding: 2px 8px;
+  border: 1px solid #afafaf;
+  border-radius: 25px;
+  width: 55%;
+  margin-left: 25px;
+  font-size: 25px;
+  text-align: center;
+}
+
+.text-field {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  color: rgb(54, 45, 45);
+  background-color: rgb(255, 99, 71, 0.9);
+  padding: 10px;
+  border-radius: 2px;
+  font-size: xx-large;
+}
+
+button {
+  margin: 20px;
+  background-color: rgb(0, 255, 0);
+  color: black;
+  text-shadow: black;
+  font-size: larger;
+
+  color: rgb(2, 2, 2);
+  height: 50px;
+  border-radius: 25px;
+  cursor: pointer;
+  width: 90%;
+}

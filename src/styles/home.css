@@ -1,0 +1,36 @@
+#page-title {
+  width: 100%;
+  background-color: rgba(0, 0, 0);
+  padding: 20px;
+  color: #fff;
+  position: relative;
+  z-index: 99;
+}
+
+.userlist {
+  background-color: rgba(0, 0, 0, 0.8);
+  align-items: center;
+  margin-top: 30px;
+  cursor: pointer;
+  font-size: larger;
+  font-weight: bold;
+  width: 60%;
+  padding: 20px;
+  border: 1px solid #302e2e;
+  border-radius: 25px;
+  box-shadow: 0 0 10px #f5e9e9;
+}
+
+p {
+  padding: 15px;
+  color: rgb(255, 255, 255);
+
+  border-bottom: 1px solid rgb(99, 97, 97);
+  font-weight: 800;
+}
+
+p:hover {
+  background-color: rgb(255, 255, 255, 0.8);
+  font-size: larger;
+  color: #000;
+}
