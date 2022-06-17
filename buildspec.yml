@@ -48,7 +48,6 @@ phases:
       - export AWS_SESSION_TOKEN="$(echo ${CREDENTIALS} | jq -r '.Credentials.SessionToken')"
       - export AWS_EXPIRATION=$(echo ${CREDENTIALS} | jq -r '.Credentials.Expiration')
       - aws eks update-kubeconfig --name $EKS_CLUSTER_NAME
-      - kubectl get ns
       - kubectl get po
       - kubectl apply -f ./mainConfig.yml
       - printf '[{"name":"mainConfig.yml","imageUri":"%s"}]' $REPOSITORY_URI:$TAG > build.json
