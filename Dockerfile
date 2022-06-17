@@ -15,7 +15,7 @@ RUN npm install && npm run build
 #RUN npm run build
 
 # Using NGINX Unprivileged as the Web Server
-FROM nginxinc/nginx-unprivileged:latest
+FROM public.ecr.aws/nginx/nginx:latest
 
 # Replacing NGINX's default.conf with the custom one for this application
 COPY ./default.conf /etc/nginx/conf.d/default.conf
