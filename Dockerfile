@@ -1,8 +1,6 @@
 # Using Node 12 buster-slim as builder
 FROM public.ecr.aws/docker/library/node:14-buster-slim as builder
 
-
-
 # Copying everything to the container
 COPY . /usr/app/
 
