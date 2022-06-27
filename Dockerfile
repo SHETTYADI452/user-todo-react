@@ -4,7 +4,7 @@ FROM public.ecr.aws/docker/library/node:14-buster-slim as builder
 
 
 # Copying everything to the container
-COPY ./my-project /usr/app/
+COPY . /usr/app/
 
 # Setting WORKDIR
 WORKDIR /usr/app/
