@@ -29,5 +29,3 @@ WORKDIR /usr/share/nginx/
 # Exposing port 8080 of the container
 # Cannot run on port below 1024 in non-root mode 
 EXPOSE 8080
-
-CMD npm start
